@@ -1,0 +1,65 @@
+What is Linux?
+Linux is a powerful, open-source operating system (OS).
+
+Where is Linux Widely Used?
+Tech Giants: Companies like Google, Amazon, and Netflix use Linux heavily for their servers and cloud infrastructure.
+
+Developers & Software Engineers: A preferred environment for coding, software development, and deployment.
+
+Cybersecurity Professionals: The industry standard for ethical hacking, security testing, and networking.
+
+Educational Institutions: Widely used for teaching computer science, operating systems, and academic research.
+
+History & Birth of Linux
+1969: The UNIX Era
+Creation: UNIX was developed at Bell Labs by Dennis Ritchie and others.
+
+C Language: The C programming language was developed alongside it.
+
+Cost: Initially, UNIX was free to use.
+
+Key Features of UNIX:
+
+Multiuser: Multiple people can use the system at the same time.
+
+Multitasking: Can run multiple programs simultaneously.
+
+Portability: Because it was written in C, it was much easier to run on different types of hardware.
+
+1980s: The GNU Project
+Initiative: Started by Richard Stallman to create a completely free UNIX-like operating system.
+
+Components Built: Compilers, editors, and shells.
+
+The Missing Piece: The project struggled to build a fully functioning kernel (the core of the OS).
+
+1991: The Linux Kernel
+Creation: Linus Torvalds, a computer science student in Finland, created the Linux kernel as a personal project.
+
+Open Source: He made the kernel freely available online.
+
+The Complete OS: Eventually, the Linux kernel was combined with the tools from the GNU project to create the complete, modern Linux operating system.
+
+Key Features of Linux
+Multitasking: Capable of running multiple applications at the same time.
+
+Multiuser: Multiple users can log in and use system resources concurrently.
+
+Hierarchical File System: Files are organized in a structured, tree-like format. Everything starts from the root directory (e.g., /root/desktop, /root/downloads).
+
+Shell: Provides a command-line interface for users to interact directly with the OS.
+
+Portability: Can be installed and run on a vast variety of hardware platforms.
+
+Key Functions of an Operating System
+Resource Management: Manages hardware components like the CPU, memory, and disk storage.
+
+Process Management: Handles program execution, ensuring each process gets a fair chance to use the CPU to get its job done.
+
+Memory Management: Allocates RAM to active processes and frees it up once the process is complete.
+
+Device Management: Manages input/output devices (keyboards, microphones, displays, etc.) using device drivers.
+
+File Management System: * Organizes and stores files on a disk in a structured way.
+
+Manages file access, user permissions, and security.
