@@ -1,0 +1,75 @@
+ARCHITECTURE OF A NON-LINUX OPERATING SYSTEM :
+
+USERS / APPLICATIONS
+--------------------
+OPERATING SYSTEM
+--------------------
+KERNAL
+-------------------
+HARDWARE
+
+
+
+
+ARCHITECTURE OF A LINUX OPERATING SYSTEM :
+
+USER / APPLICATIONS
+-------------------
+SHELL
+-------------------
+OPERATING SYSTEM
+-------------------
+KERNAL
+-------------------
+HARDWARE
+
+
+
+
+WHAT IS KERNAL ?
+---> THE KERNAL IS CORE/HEART OF THE LINUX OS.
+
+--> IT DIRECTLY INTERACTS WITH :
+-CPU
+-MEMORY(RAM)
+-DISK
+-DEVICES
+-NETWORK HARDWARE
+
+
+
+WHAT IS SHELL ?
+
+--> THE SHELL IS A COMMAND INTERPRETER .
+
+
+--> IT ACTS A BRIDGE BETWEEN :
+-USER
+
+-KERNAL
+
+--> WHEN YOU TYPE ANY COMMANDS :
+-- LS
+-- PWD
+
+THE SHELL:
+-- READS COMMAND
+-- UNDERSTND IT
+-- PASSES REQUEST TO THE KERNAL
+-- DISPLAY OUTPUT
+
+
+
+
+
+1.mkdir <dir_name> == this command will help you to create a new empty
+directory/folder .
+2. ls(list) == this command will list down the files and folders
+only including non-hidden ones .
+3.ls -a == this command is going to list down all the files and
+folders inlcuding the hidden ones
+4. ls -al/-la == this command will help you list down all the files
+and folders including the hidden ones in long listing format
+5.cd <dir_name> == this command will help you to move from one directory to another .
+6. cd .. == this command will take you one directory backward or exit the current directory
+7. ls -l == list in long listing format
