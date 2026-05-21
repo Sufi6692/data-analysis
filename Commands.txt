@@ -1,0 +1,24 @@
+1.mkdir <dir_name> == this command will help you to create a new empty
+directory/folder .
+2. ls(list) == this command will list down the files and folders
+only including non-hidden ones .
+3.ls -a == this command is going to list down all the files and
+folders inlcuding the hidden ones
+4. ls -al/-la == this command will help you list down all the files
+and folders including the hidden ones in long listing format
+5.cd <dir_name> == this command will help you to move from one directory to another .
+6. cd .. == this command will take you one directory backward or exit the current directory
+7. ls -l == list in long listing format
+8. cd ../../.. == this command is used to exit multiple folders
+9. mkdir -p dir1/dir2/....== this command will help you create one folder inside the another folder
+without executing the mkdir and cd command again and again
+10. touch <filename> == this command is used to create a new empty file
+11. rm <filename> == this command is used to delete any file
+12 . rmdir <dirname> == this command is used to remove any empty directory/folder
+13. rm -r <diranme> == this command is used to remove any non empty directory/folder
+
+
+***LINUX EDITORS***
+
+nano == this is juat an editor in linux that we can use to edit the files and also to
+create the files
