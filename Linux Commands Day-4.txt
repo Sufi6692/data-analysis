@@ -1,0 +1,46 @@
+14: nano <filename> == this command will open the file inside the nano editor
+
+NOTE : how to save and exit
+--> CTRL + O
+--> ENTER
+--> CTRL + X
+
+
+vi == this is juat an editor in linux that we can use to edit the files and also to
+create the files
+
+15. vi <filename> == this command will help to open the file inside the editor
+
+NOTE : how to save and exit
+--> open the file inside the ediotr
+--> go inside the ediotr mode by pressing "i" or "a "
+--> once done press "esc"
+--> write ":wq" and hit enter .
+
+if you dont want to save and exit
+
+--> so write ":q!" and hit enter
+
+16.cat <fileanme> == this will print the entire content on the terminal
+17. cat > <filename> == this command  is used to create file and write content at the same time
+
+NOTE: how to save
+--> CTRL + D
+
+note : if the file already exists , the new content is going to replace the
+revious one
+
+18. cat >> filname == its use to append the new content at the end of the
+previpus
+
+19. cp <fileanme> <destination path> == this command is used to create
+copy of the file .
+
+20. cp -r <filename> <destinationpat> == this command will help you to create a copy od the
+folder
+
+21. mv <filename> <destinationpat> == this command is used to move   the file
+ from orignal location to the new one
+
+ 22. mv <oldname> <newanem> ==  this commmand we can use to rename
+ folder and files
