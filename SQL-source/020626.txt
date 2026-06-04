@@ -1,0 +1,102 @@
+use retail;
+
+-- * means all columns
+update salespeople
+set comm = 0.15
+where snum = 1001;
+
+select * from salespeople;
+
+--find salesperson living in London
+--where 
+select * from salespeople where city = 'London';
+--read 6 rows
+--output 3 rows
+
+--find salesperson living in London and New York
+select * from salespeople where city = 'London' or city = 'New York';
+
+--and means all the conditions should be true
+--or means either of the condition should be true
+
+--find people living in London and comm should be less than 15%
+select * from salespeople where city = 'London' and comm < 0.15;
+
+--find people living in London and comm should be  upto 15%
+select * from salespeople where city = 'London' and comm <= 0.15;
+
+--find people living in London/New York and comm should be  upto 15%
+select * from salespeople where (city = 'London' or city = 'New York') and comm <= 0.15;
+
+--in [in place of OR]
+select * from salespeople where city in ('London','New York', 'Barcelona') and comm <= 0.15;
+
+--find people whose comm is above 10 and less than 20
+select * from salespeople where comm > 0.10 and comm < 0.20;
+
+--find people whose comm is 10 and above and less than or equal to 20
+select * from salespeople where comm >= 0.10 and comm <= 0.20;
+
+--between
+select * from salespeople where comm between 0.10 and 0.20;
+
+alter table salespeople alter column comm dec(4,2) null;
+
+insert into salespeople values(1009, 'John', 'London', null);
+
+--find all people whose comm upto 15%
+select * from salespeople where comm <= 0.15;
+
+--search rows for NULL values
+select * from salespeople where comm is NULL;
+
+--search rows without NULL values
+select * from salespeople where comm is not NULL;
+
+--find people living in other than London city
+-- != means NOT EQUAL TO
+select * from salespeople where city != 'London';
+
+select * from salespeople where city <> 'London';
+
+select * from salespeople where city not in ('London');
+
+--create customer table
+CREATE TABLE customer (
+cnum INT NOT NULL,
+cname VARCHAR(30) NOT NULL,
+city VARCHAR(30) NOT NULL,
+rating int not null,
+snum int NOT NULL,
+PRIMARY KEY (cnum),
+FOREIGN KEY (snum) REFERENCES salespeople(snum)
+);
+
+INSERT INTO customer VALUES (2001, 'Hoffman', 'London',100, 1001);
+
+select * from customer;
+
+INSERT INTO customer VALUES (2002, 'Giovanni', 'Rome',200, 1003);
+INSERT INTO customer VALUES (2003, 'Liu', 'San Jose',200, 1002);
+INSERT INTO customer VALUES (2004, 'Grass', 'Berlin',300, 1002);
+INSERT INTO customer VALUES (2006, 'Clemens', 'London',100, 1001);
+INSERT INTO customer VALUES (2008, 'Cisneros', 'San Jose',300, 1007);
+INSERT INTO customer VALUES (2007, 'Pereira', 'Rome',100, 1004);
+
+--count function [returns num of rows in the query]
+select count(cnum) as 'count of rows' from customer;
+
+--count num of rows customers living in London city
+select count(cnum) as 'count of rows' from customer
+where city = 'London';
+
+select * from salespeople;
+select count(snum) from salespeople;
+
+select count(comm) from salespeople;
+
+update salespeople
+set city = ''
+where snum = 1009;
+
+select count(city) from salespeople;

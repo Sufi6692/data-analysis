@@ -1,0 +1,64 @@
+create database tmp;
+
+use tmp;
+
+create table salesman(
+salesmanID int null,
+salesman_name varchar(30) null,
+city varchar(30) null);
+
+create table customer(
+custID int null,
+Customername varchar(30) null,
+salesmanID int null);
+
+
+assigning not null
+------------------
+ALTER TABLE Salesman alter column SalesmanId int NOT NULL;
+
+
+Add Primary key constraint for SalesmanId column in Salesman table.
+------------------------------------------------------------------ 
+alter table salesman add primary key (SalesmanId);
+
+
+
+add a new column as comm decimal(4,2)
+--------------------------------------
+ALTER TABLE Salesman add comm decimal(4,2) NULL;
+
+
+Add default constraint for City column in Salesman table. 
+--------------------------------------------------------
+ALTER TABLE Salesman ADD CONSTRAINT DF_city DEFAULT 'London' FOR City;
+
+
+Add Foreign key constraint for SalesmanId column in Customer table. 
+-------------------------------------------------------------------
+--customer is a child table.
+ALTER TABLE customer
+ADD FOREIGN KEY(salesmanID)
+REFERENCES salesman(salesmanID);
+
+
+Add not null constraint and change length in Customer_name column for the Customer table.
+------------------------------------------------------------------------------------------
+ALTER TABLE customer alter column Customername varchar(255) NOT NULL;
+
+
+renaming the column
+-------------------
+EXEC sp_rename 'dbo.salesman.comm', 'commission', 'COLUMN';
+
+renaming the table
+------------------
+EXEC sp_rename 'dbo.salesman', 'salespeople';
+
+renaming the database
+----------------------
+ALTER DATABASE tmp MODIFY NAME = temp
+
+in case db is not locked
+exec sp_who
+KILL <spid>

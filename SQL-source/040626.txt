@@ -1,0 +1,107 @@
+use retail;
+
+select * from salespeople;
+select * from customer;
+
+--Joins
+-- by joining tables we can extract data from many tables
+-- join customer with salespeople
+--cols = 9
+--rows = 7
+select * from customer join salespeople
+on
+customer.snum = salespeople.snum;
+
+--count of customer for each salesperson. Print sname also
+select salespeople.snum, sname, count(cnum) from 
+customer join salespeople
+on
+customer.snum = salespeople.snum
+group by salespeople.snum, sname;
+
+--find the salesperson living in same of its customer
+select * from customer c join salespeople s
+on
+c.city = s.city
+where c.snum = s.snum;
+
+--joins can happen on NON-PK and NON-FK also
+
+--find the salesperson NOT living in same of its customer
+select * from customer c join salespeople s
+on
+c.snum = s.snum
+where c.city != s.city;
+
+--OR
+
+select * from customer c join salespeople s
+on
+c.city != s.city
+where c.snum = s.snum;
+
+--right outer join
+select * from 
+customer right outer join salespeople
+on
+customer.snum = salespeople.snum;
+
+
+--count of customer for each salesperson. Print sname also
+--print FRAN also
+select salespeople.snum, sname, count(cnum) from 
+customer right outer join salespeople
+on
+customer.snum = salespeople.snum
+group by salespeople.snum, sname;
+
+--create orders table
+CREATE TABLE orders (
+onum INT NOT NULL,
+amt DECIMAL(7,2) NOT NULL,
+odate Date NOT NULL,
+cnum int NOT NULL,
+PRIMARY KEY (onum),
+FOREIGN KEY (cnum) REFERENCES customer(cnum)
+);
+
+INSERT INTO orders VALUES (3001, 18.69, '1996-03-10', 2008);
+
+select * from orders;
+
+--adding 9 orders
+INSERT INTO orders VALUES (3003, 767.19, '1996-03-10', 2001);
+INSERT INTO orders VALUES (3002, 1900.19, '1996-03-10', 2007);
+INSERT INTO orders VALUES (3005, 5160.45, '1996-03-10', 2003);
+INSERT INTO orders VALUES (3006, 1098.16, '1996-03-10', 2008);
+INSERT INTO orders VALUES (3009, 1713.23, '1996-04-10', 2002);
+INSERT INTO orders VALUES (3007, 75.75, '1996-04-10', 2002);
+INSERT INTO orders VALUES (3008, 4723.00, '1996-05-10', 2006);
+INSERT INTO orders VALUES (3010, 1309.95, '1996-06-10', 2004);
+INSERT INTO orders VALUES (3011, 9891.88, '1996-06-10', 2006);
+
+--find total value of all orders
+-- sum function
+
+select sum(amt) from orders;
+
+--find the highest order value
+select max(amt) from orders;
+
+--find the lowest order value
+select min(amt) from orders;
+
+--average order value
+select avg(amt) from orders;
+
+select sum(amt)/count(onum) from orders;
+
+--find date wise sales
+select odate, sum(amt) from orders
+group by odate;
+
+--cust wise sales
+select cnum, sum(amt) from orders
+group by cnum;
+
+--print the cust name in the above query

@@ -1,0 +1,60 @@
+--create database command
+create database retail;
+
+--selection of database
+use retail;
+
+--create table for salesperson
+create table salespeople (
+snum int not null,
+sname varchar(30) not null,
+city varchar(30) not null,
+comm dec(4,2) not null,
+primary key (snum));
+
+--add first row in the salespeople table
+insert into salespeople values (1001, 'Peel', 'London', 0.12);
+
+--query the salespeople table [* denotes all columns]
+select * from salespeople;
+
+--display only snum and sname
+select snum, sname from salespeople;
+
+--add another row in the same table
+insert into salespeople values(1002, 'Serres', 'San Jose', 0.13);
+
+--add multiple rows in a table
+insert into salespeople values (1004, 'Motika', 'London',  .11),
+(1007, 'Rifkin', 'Barcelona', .15),
+(1003, 'AxelRod', 'New York', .10),
+(1005, 'Fran', 'London', .26);
+
+--update command for edit in a table
+--modify Peel city to Berlin
+-- where condition will target selective records
+
+update salespeople
+set city = 'Berlin'
+where snum = 1001;
+
+select * from salespeople;
+
+--update Peel city to London and comm to 20%
+update salespeople
+set city = 'London', comm = 0.20
+where snum = 1001;
+
+update salespeople
+set city = 'London1'
+where city = 'London'
+
+update salespeople
+set city = 'London'
+where city = 'London1'
+
+--delete command
+insert into  salespeople values (1008, 'John', 'London', 0.15);
+
+delete from salespeople
+where snum = 1008;

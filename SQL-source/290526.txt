@@ -1,0 +1,72 @@
+create database tmp;
+
+use tmp;
+
+create table salesman(
+salesmanID int null,
+salesman_name varchar(30) null,
+city varchar(30) null);
+
+create table customer(
+custID int null,
+Customername varchar(30) null,
+salesmanID int null);
+
+ALTER TABLE Salesman alter column SalesmanId int NOT NULL;
+
+alter table salesman add primary key (SalesmanId);
+
+ALTER TABLE Salesman add comm decimal(4,2) NULL;
+
+ALTER TABLE Salesman ADD CONSTRAINT DF_city DEFAULT 'London' FOR City;
+
+--command for view complete table structure
+exec sp_help salesman;
+
+insert into salesman (salesmanID, salesman_name, comm) values(1001, 'John', 0.15);
+
+select * from salesman;
+
+insert into salesman (salesmanID, salesman_name, city) values(1002, 'Alan', 'New York');
+
+insert into salesman (salesmanid, salesman_name, comm) values(1003, 'Mho', 0.20);
+
+ALTER TABLE customer
+ADD FOREIGN KEY(salesmanID)
+REFERENCES salesman(salesmanID);
+
+exec sp_help customer;
+
+insert into customer values (2001, 'Mr B', 1001);
+
+select * from salesman;
+select * from customer;
+
+insert into customer values (2002, 'Mr C', 1001);
+
+ALTER TABLE customer alter column Customername varchar(255) NOT NULL;
+
+EXEC sp_rename 'dbo.salesman.comm', 'commission', 'COLUMN';
+
+EXEC sp_rename 'dbo.salesman', 'salespeople';
+
+ALTER DATABASE tmp MODIFY NAME = temp
+
+exec sp_who
+kill 55
+
+use retail;
+
+use temp;
+
+--drop one table
+drop table salespeople; -- not allowed
+
+drop table customer;
+
+select * from salespeople;
+
+truncate table salespeople;
+
+
+
