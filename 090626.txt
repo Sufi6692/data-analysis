@@ -1,0 +1,116 @@
+use retail;
+
+select * from orders;
+
+select sum(amt) from orders;
+
+select * from customer;
+
+--string functions
+--upper function
+select upper(cname) from customer;
+
+--lower function
+select lower(city) from customer;
+
+--len function
+select len(city) from customer;
+
+--concat
+select concat('John',' ','Smith');
+
+--combine cname and city in one string
+select concat(cname,' ',city) from customer;
+
+select ASCII('a');
+
+--trim function
+select * from salespeople;
+
+update salespeople
+set city = ' London'
+where snum = 1001;
+
+select * from salespeople where city = 'London';
+select len(' London');
+select len('London');
+
+--print all rows with city as London
+select * from salespeople where trim(city) = 'london';
+
+--pattern match using like
+--find sname where e letter is found
+select * from salespeople where sname like '%e%';
+
+
+
+
+--find sname where an is found
+select * from salespeople where sname like '%an%';
+
+select * from salespeople where city like '%ose%'
+
+select * from salespeople where city like '%London%'
+
+--print all the names starts with letter r
+select * from salespeople where sname like 'r%';
+
+--print all the names ends with letter L
+select * from salespeople where sname like '%l';
+
+--substring function
+select substring('habit',4,2);
+
+--extract bit from habit
+select substring('habit',3,3);
+
+select 'mr', 'john', 'smith';
+select concat(upper(substring('mr',1,1)), substring('mr',2,1), ' ', 
+upper(substring('john',1,1)), substring('john',2,len('john')-1),  ' ', 
+upper(substring('smith',1,1)), substring('smith',2,len('smith')-1))
+
+--mathematical functions
+
+--abs
+select abs(-500);
+
+--round
+select round(25.457,2);
+
+--avg value of all orders
+select avg(amt) from orders;
+
+select round(avg(amt),2) from orders;
+
+--convert function
+select convert(dec(10,2), round(avg(amt),2)) from orders;
+
+select round(456.1264,2);
+
+--square func
+select square(7);
+
+--power
+select power(7,4);
+
+--principal = 100000
+--rate = 7.00%
+--duration = 2 years
+--compound - after 3 months
+--cycles per year - 4
+
+--calc comp int
+select 100000*(power(1+ (0.07/4), 8)) - 100000;
+
+--calc simple int
+select 100000*0.07*2;
+
+--date functions
+select * from orders;
+
+select *, year(odate) from orders;
+
+select *, year(odate), month(odate), datename(mm, odate),
+datename(dw, odate) from orders;
+
+select getdate();
