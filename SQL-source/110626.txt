@@ -1,0 +1,136 @@
+use bank;
+
+select * from account;
+select * from txn;
+
+--trigger after update
+CREATE TRIGGER update_balance_2 ON txn  
+AFTER UPDATE  
+AS  
+BEGIN  
+	SET NOCOUNT ON;
+	declare @amount decimal(10,2);
+	declare @account_id varchar(30);
+	declare @old_amount decimal(10,2);
+	declare @old_account_id varchar(30);
+
+
+	select @old_account_id=account_id, @old_amount=amount from deleted
+
+	--reverse the old txn
+	update account 
+	set balance = balance - @old_amount
+	where account.account_id = @old_account_id;
+
+	select @account_id=account_id, @amount=amount from inserted; 
+	
+	update account 
+	set balance = balance + @amount
+	where account.account_id = @account_id;
+ 
+END;  
+
+update txn
+set amount = 35000
+where txn_id = 1;
+
+select * from account;
+select * from txn;
+
+CREATE TRIGGER update_balance_3 ON txn  
+AFTER DELETE
+AS  
+BEGIN  
+	SET NOCOUNT ON;
+	declare @old_amount decimal(10,2);
+	declare @old_account_id varchar(30);
+
+	select @old_account_id=account_id, @old_amount=amount from deleted
+
+	update account 
+	set balance = balance - @old_amount
+	where account.account_id = @old_account_id;
+
+END;  
+
+delete from txn
+where txn_id = 2;
+
+use retail;
+
+select * from customer where city = 'London';
+
+CREATE PROCEDURE city_customer  
+    @city varchar(50)   
+AS   
+
+    SET NOCOUNT ON;  
+    SELECT * 
+    FROM customer  
+    WHERE city = @city;  
+
+GO  
+
+EXECUTE city_customer 'London';
+
+EXECUTE city_customer 'Berlin';
+
+
+select * from orders;
+
+CREATE PROCEDURE add_order
+@onum int,
+@amt decimal(10,2),
+@odate date,
+@cname varchar(50)
+as
+begin
+	set nocount on;
+	insert into orders values 
+	(@onum,@amt,@odate,(select cnum from customer where cname = @cname));
+end
+GO
+
+select * from customer;
+
+exec add_order 3099, 4000, '2026-05-19', 'Hoffman';
+
+select * from orders;
+
+
+CREATE PROCEDURE update_order
+@onum int,
+@amt decimal(10,2),
+@odate date,
+@cname varchar(50)
+
+
+as
+begin
+	set nocount on;
+
+	update orders
+	set amt=@amt, odate=@odate, cnum = (select cnum from customer where cname = @cname)
+	where onum = @onum
+end
+GO
+
+exec update_order 3099, 3000, '2026-05-19', 'Grass'
+
+select * from customer;
+select * from orders;
+
+CREATE PROCEDURE delete_order
+@onum int
+as
+begin
+	set nocount on;
+
+	delete from orders
+	where onum = @onum
+end
+GO
+
+exec delete_order 3099;
+
+select * from orders;
