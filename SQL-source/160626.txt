@@ -1,0 +1,119 @@
+use retail;
+
+--find list of orders for customers who live in London
+
+select * from orders;
+
+--join query
+select onum, amt, odate, c.cnum, cname from 
+orders o join customer c
+on
+o.cnum = c.cnum
+where city = 'London';
+
+--subquery
+select * from orders where
+cnum in (select cnum from customer where city = 'London');
+
+select * from orders where
+cnum in (2001, 2006, 2050);
+
+--find customer whose avg order value is above 2000
+select * from customer where cnum in (
+select cnum from orders
+group by cnum
+having avg(amt) > 2000);
+
+--find the such orders whose order value is greater than
+--average order value
+
+select * from orders where amt >= (
+select avg(amt) from orders);
+
+--find the max order value detail
+select * from orders;
+
+select max(amt) from orders;
+
+select * from orders where amt = (select max(amt) from orders);
+
+--find the 2nd highest order value detail
+
+select * from orders where amt = (
+select max(amt) from orders where amt < (select max(amt) from orders));
+
+--find top 2 orders
+select top 2 * from orders order by amt desc;
+
+--display highest order value customer name
+select * from customer 
+where cnum in (select cnum from orders where amt=(select max(amt) from orders)); 
+
+--Rank function
+CREATE TABLE rank_table (Name VARCHAR(10));
+
+INSERT INTO rank_table (Name) 
+ VALUES('A'), ('C'), ('C'), ('B'), ('B'), ('D'), ('E');
+
+select * from rank_table;
+
+SELECT Name, 
+RANK () OVER (
+ORDER BY Name
+) AS Rank_no 
+FROM rank_table;
+
+--find 2nd rank 
+select * from 
+(SELECT Name, 
+RANK () OVER (
+ORDER BY Name
+) AS Rank_no 
+FROM rank_table) t1
+where rank_no = 2;
+
+--FIND DENSE_RANK()
+SELECT Name, 
+DENSE_RANK () OVER (
+ORDER BY Name
+) AS Rank_no 
+FROM rank_table;
+
+--find top 5
+select name, rank_no from (
+SELECT Name, 
+RANK () OVER (
+ORDER BY Name
+) AS Rank_no 
+FROM rank_table) x where Rank_no <=5 ;
+
+CREATE TABLE rank_table2 (Name VARCHAR(10), value int );
+
+INSERT INTO rank_table2 (Name, value) 
+ VALUES('A',90), ('B',80), ('C',100), ('D',40), ('E',60);
+
+select * from rank_table2;
+
+select name, value, rank() over (order by value desc) as rank_no
+from rank_table2;
+
+CREATE TABLE students (Name VARCHAR(10), value int, section char(1));
+
+INSERT INTO students (Name, value, section) 
+ VALUES('John',90, 'B'), ('Amy',80, 'B'), ('Alan',100, 'A'), ('Henry',40, 'B'), ('Mary',60, 'A');
+
+ select * from students;
+
+ select * from
+ (SELECT section,name,value,
+RANK() OVER (PARTITION BY section ORDER BY value DESC) AS rank
+FROM
+students) t1
+where section = 'B';
+
+--row number function
+SELECT ROW_NUMBER() OVER(ORDER BY value desc) AS Row_num, name, value from rank_table2;
+
+SELECT ROW_NUMBER() OVER(ORDER BY name) AS Row_num, name from rank_table;
+
+SELECT section, name, value, ROW_NUMBER() OVER (PARTITION BY section ORDER BY value DESC) AS row_num FROM students;

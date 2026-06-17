@@ -1,0 +1,60 @@
+In SQL Server, an Inline Table-valued function (ITVF) is a user-defined function that returns a table as its result. 
+Unlike a scalar function that returns a single scalar value, an Inline Table Valued Function 
+returns a result set that can be used in a query just like a table. 
+
+An Inline Table Valued Function is “inline” because its definition is part of a query, 
+rather than being a standalone object.
+
+Example
+
+use retail;
+
+CREATE TABLE Student
+ (
+   Id INT PRIMARY KEY,
+   Name VARCHAR(50) NOT NULL,
+   Marks INT NOT NULL
+);
+
+-- insert  records
+
+INSERT INTO Student 
+VALUES (1, 'Tushar', 60), (2, 'Kunal', 80), (3, 'Shivam', 30), 
+(4, 'Rushi', 45),(5, 'Mahesh',60),(6, 'Shubham',39),(7, 'Rahul',97);
+
+select * from Student;
+
+create function dbo.GetNameByMarks(@mark int)
+Returns Table
+as
+Return
+(
+select id, name, marks from student
+where marks >= @mark
+);
+
+select * from dbo.GetNameByMarks(45);
+
+
+--create function without parameter
+
+create function dbo.DisplayStudentDetails()
+Returns Table
+as
+Return
+(
+select id, name, marks from student
+);
+
+select * from dbo.DisplayStudentDetails();
+
+-------------------------------------------------
+create function dbo.DisplayStudent_withPassMarks()
+Returns Table
+as
+Return
+(
+select id, name, marks from student where marks >= 45
+);
+
+select * from dbo.DisplayStudent_withPassMarks();
