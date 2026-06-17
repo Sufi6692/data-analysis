@@ -1,0 +1,142 @@
+use retail;
+
+--CTE
+WITH sp_cust_orders AS(
+select onum, amt, odate, o.cnum, cname, c.city as 'customer_city',
+rating, c.snum, sname, s.city as 'salesperson_city', comm
+
+from orders o join customer c
+on
+o.cnum = c.cnum
+
+join salespeople s
+on
+s.snum = c.snum)
+select snum, sname, sum(amt*comm) from sp_cust_orders group by snum,sname;
+
+--using CTE display the total amt spent by each cust
+WITH cust_orders AS(
+select onum, amt, odate, o.cnum, cname
+from orders o join customer c
+on
+o.cnum = c.cnum)
+select cnum, cname, sum(amt) from cust_orders group by cnum, cname;
+
+--find total value for all orders for customer who are living in London
+
+WITH cust_orders AS(
+select onum, amt, odate, o.cnum, cname
+from orders o join customer c
+on
+o.cnum = c.cnum
+where city = 'London')
+select cnum, cname, sum(amt) from cust_orders group by cnum, cname;
+
+SET STATISTICS IO ON;
+SET STATISTICS TIME ON;
+GO
+
+SET STATISTICS IO OFF;
+SET STATISTICS TIME OFF;
+GO
+exec sp_help customer;
+
+select * from salespeople;
+
+select * from salespeople where snum = 1007;
+--op = 1
+--read = 1
+
+select * from salespeople where city = 'London';
+
+select * from salespeople where comm = 0.15;
+
+
+insert into salespeople values (1006, 'A', 'London', 0.15);
+
+CREATE NONCLUSTERED INDEX IX_salespeople_city 
+ON dbo.salespeople (city);
+
+exec sp_help salespeople;
+
+--error handling
+CREATE TABLE dbo.DB_Error_Log (
+    LogID INT IDENTITY(1,1) PRIMARY KEY,
+    UserName NVARCHAR(100),
+    ErrorNumber INT,
+    ErrorSeverity INT,
+    ErrorState INT,
+    ErrorLine INT,
+    ErrorProcedure NVARCHAR(128),
+    ErrorMessage NVARCHAR(4000),
+    LogDate DATETIME DEFAULT GETDATE()
+);
+GO
+
+exec add_order 4001, 0, '2026-05-19', 'Hoffman';
+
+CREATE PROCEDURE add_order_with_errors_handling
+@onum int,
+@amt decimal(10,2),
+@odate date,
+@cname varchar(50)
+AS
+BEGIN
+    -- Best Practice: Automatically abort execution on unhandled transaction errors
+    SET XACT_ABORT ON; 
+
+    BEGIN TRY
+        -- Start explicit transaction
+        BEGIN TRANSACTION;
+
+	insert into orders values 
+	(@onum,@amt,@odate,(select cnum from customer where cname = @cname));
+
+        -- Commit changes if everything succeeds
+        COMMIT TRANSACTION;
+        PRINT 'Transaction committed successfully.';
+    END TRY
+    BEGIN CATCH
+        -- Check if there is an active transaction that needs rolling back
+        IF @@TRANCOUNT > 0
+        BEGIN
+            ROLLBACK TRANSACTION;
+            PRINT 'Transaction rolled back due to an error.';
+        END;
+
+        -- Log the precise error properties into the table
+        INSERT INTO dbo.DB_Error_Log (
+            UserName, ErrorNumber, ErrorSeverity, ErrorState, ErrorLine, ErrorProcedure, ErrorMessage
+        )
+        VALUES (
+            SUSER_SNAME(),
+            ERROR_NUMBER(),
+            ERROR_SEVERITY(),
+            ERROR_STATE(),
+            ERROR_LINE(),
+            ERROR_PROCEDURE(),
+            ERROR_MESSAGE()
+        );
+
+
+        -- The THROW statement requires a preceding semicolon if not placed first
+        THROW; 
+    END CATCH
+END;
+GO
+
+EXEC add_order_with_errors_handling 3099, 0, '2026-05-19', 'Hoffman';
+
+select * from DB_Error_Log;
+
+EXEC add_order_with_errors_handling 4001, 0, '2026-05-19', 'Hoffman';
+
+select * from orders;
+
+select * from emp;
+
+select * from retail.dbo.emp;
+
+select * from bank.dbo.account;
+
+select * from student_finance;

@@ -1,0 +1,67 @@
+-- 1. Create a dummy error logging table
+CREATE TABLE dbo.DB_Error_Log (
+    LogID INT IDENTITY(1,1) PRIMARY KEY,
+    UserName NVARCHAR(100),
+    ErrorNumber INT,
+    ErrorSeverity INT,
+    ErrorState INT,
+    ErrorLine INT,
+    ErrorProcedure NVARCHAR(128),
+    ErrorMessage NVARCHAR(4000),
+    LogDate DATETIME DEFAULT GETDATE()
+);
+GO
+
+-- 2. Stored procedure with robust error handling
+CREATE PROCEDURE add_order_with_errors_handling
+@onum int,
+@amt decimal(10,2),
+@odate date,
+@cname varchar(50)
+AS
+BEGIN
+    -- Best Practice: Automatically abort execution on unhandled transaction errors
+    SET XACT_ABORT ON; 
+
+    BEGIN TRY
+        -- Start explicit transaction
+        BEGIN TRANSACTION;
+
+	insert into orders values 
+	(@onum,@amt,@odate,(select cnum from customer where cname = @cname));
+
+        -- Commit changes if everything succeeds
+        COMMIT TRANSACTION;
+        PRINT 'Transaction committed successfully.';
+    END TRY
+    BEGIN CATCH
+        -- Check if there is an active transaction that needs rolling back
+        IF @@TRANCOUNT > 0
+        BEGIN
+            ROLLBACK TRANSACTION;
+            PRINT 'Transaction rolled back due to an error.';
+        END;
+
+        -- Log the precise error properties into the table
+        INSERT INTO dbo.DB_Error_Log (
+            UserName, ErrorNumber, ErrorSeverity, ErrorState, ErrorLine, ErrorProcedure, ErrorMessage
+        )
+        VALUES (
+            SUSER_SNAME(),
+            ERROR_NUMBER(),
+            ERROR_SEVERITY(),
+            ERROR_STATE(),
+            ERROR_LINE(),
+            ERROR_PROCEDURE(),
+            ERROR_MESSAGE()
+        );
+
+
+        -- The THROW statement requires a preceding semicolon if not placed first
+        THROW; 
+    END CATCH
+END;
+GO
+
+-- 3. Execute the procedure with a '0' to intentionally trigger the catch block
+EXEC add_order_with_errors_handling 3099, 4000, '2026-05-19', 'Hoffman';
