@@ -275,3 +275,4 @@ b = 70
 res = (a>80) and (a>b)
 print("result is -",res)
 print(not(res))
+
