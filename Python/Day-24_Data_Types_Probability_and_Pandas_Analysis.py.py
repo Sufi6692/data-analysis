@@ -212,8 +212,7 @@ print(data["Population in thousands (2017)"].mean())
 # print(np.mean(data(["Population in thousands (2017)"])))
 
 # Find in which region most of the countries are present
-
-data ["Region"].mode()
+print(data["Region"].mode())
 
 # Which country is having the highest population density per Km2
 
