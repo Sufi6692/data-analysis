@@ -222,7 +222,3 @@ California is the state with highest no of colonies in year 2000
 
 
 
-
-
-
-
